@@ -1,6 +1,5 @@
 import argparse
 import os.path
-import pyperclip
 import re
 import os
 
@@ -8,8 +7,8 @@ TAB_SIZE = 2
 USE_SPACES = True
 
 parser = argparse.ArgumentParser(
-    prog = 'YAML2Properties',
-    description = 'Simple script for convert YAML to Properties file format.'
+    prog = 'yaml2props.py',
+    description = 'Simple script for convert subset of YAML to Properties file format.'
 )
 parser.add_argument('file', help = 'Path of YAML file')
 parser.add_argument('--output', help = 'Output path. Default is same path of input file by replace extension to .properties')
@@ -26,14 +25,11 @@ if(not output_file_path):
 if not os.path.isfile(args.file):
     raise ValueError(args.file + ' is not file')
 
-formatted = ''
-
 with open(args.file) as f:
     lines = f.readlines()
 
 prop = []
 output = ''
-array_object = False
 
 for line in lines:
     ignore = re.search(r'^\s*#', line)
@@ -52,7 +48,7 @@ for line in lines:
 
     result_prop = re.search(r'.+(?=:\s)', line)
     
-    if index is 0:
+    if index == 0:
         prop = []
         prop.append(result_prop.group().strip())
     else:
